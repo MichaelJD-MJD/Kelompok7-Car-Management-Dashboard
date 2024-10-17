@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "npx nodemon src/index.js",
     "start": "node index.js",
     "prisma:db:pull": "npx prisma db pull",
     "prisma:generate": "npx prisma generate",
@@ -19,7 +19,9 @@
     "express-async-errors": "^3.1.1",
     "express-fileupload": "^1.5.1",
     "imagekit": "^5.2.0",
+    "json-bigint": "^1.0.0",
     "uuid": "^10.0.0",
+    "zd": "^0.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
