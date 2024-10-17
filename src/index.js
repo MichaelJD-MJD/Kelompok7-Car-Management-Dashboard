@@ -16,7 +16,6 @@ app.use(
   })
 );
 
-// All routes define here
 app.use("/", router);
 
 app.use("*", notFoundURLHandler);
