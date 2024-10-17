@@ -14,15 +14,15 @@ exports.getById = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-    const { body, file } = req;
-    const data = await manufacturesServices.create(body, file);
+    const { body, files } = req;
+    const data = await manufacturesServices.create(body, files);
     successResponse(res, data, 201);
 };
 
 exports.update = async (req, res) => {
     const { id } = req.params;
-    const { body, file } = req;
-    const data = await manufacturesServices.update(id, body, file);
+    const { body, files } = req;
+    const data = await manufacturesServices.update(id, body, files);
     successResponse(res, data);
 };
 

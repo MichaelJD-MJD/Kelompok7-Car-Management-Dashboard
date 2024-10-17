@@ -1,5 +1,5 @@
-const express = require("express");
 require("dotenv").config();
+const express = require("express");
 require("express-async-errors");
 const fileUpload = require("express-fileupload");
 const router = require("./routes");
@@ -18,7 +18,8 @@ app.use(
 
 // All routes define here
 app.use("/", router);
-
+// app.use(app.router);
+// routes.initialize(app);
 
 app.use("*", notFoundURLHandler);
 app.use(errorHandler);
