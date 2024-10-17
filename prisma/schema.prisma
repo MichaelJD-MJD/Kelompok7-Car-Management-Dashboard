@@ -13,10 +13,10 @@ model cars {
   manufacture_id BigInt       @default(autoincrement())
   model          String       @db.VarChar(50)
   image          String       @db.VarChar(255)
-  rent_per_day   Int
+  rentPerDay     Int
   capacity       Int
   description    String
-  available_at   DateTime     @db.Timestamp(6)
+  availableAt    DateTime     @db.Timestamp(6)
   transmission   String       @db.VarChar(20)
   available      Boolean
   type_id        BigInt       @default(autoincrement())
