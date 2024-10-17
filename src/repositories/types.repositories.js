@@ -9,20 +9,17 @@ exports.getTypes = async (type) => {
     },
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedTypes = JSONBigInt.stringify(searchedTypes);
   return JSONBigInt.parse(serializedTypes);
 };
 
 exports.getTypeById = async (id) => {
-  // find type by id
   const type = await prisma.types.findFirst({
     where: {
       id: id,
     },
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedTypes = JSONBigInt.stringify(type);
   return JSONBigInt.parse(serializedTypes);
 };
@@ -32,7 +29,6 @@ exports.createType = async (data) => {
     data,
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedTypes = JSONBigInt.stringify(newType);
   return JSONBigInt.parse(serializedTypes);
 };
@@ -43,7 +39,6 @@ exports.updateType = async (id, data) => {
     data,
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedType = JSONBigInt.stringify(updatedType);
   return JSONBigInt.parse(serializedType);
 };
@@ -53,7 +48,6 @@ exports.deleteTypeById = async (id) => {
     where: { id },
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedTypes = JSONBigInt.stringify(deletedType);
   return JSONBigInt.parse(serializedTypes);
 };
