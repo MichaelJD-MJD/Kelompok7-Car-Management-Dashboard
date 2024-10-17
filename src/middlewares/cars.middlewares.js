@@ -15,12 +15,6 @@ exports.validateGetCars = (req, res, next) => {
     year: z.number().optional(),
   });
 
-//   const validateQuery = z.object({
-//     name: z.string(),
-//     nickname: z.string().optional(),
-//     bachelor: z.string().optional(),
-//   });
-
   const resultValidateQuery = validateQuery.safeParse(req.query);
   if (!resultValidateQuery.success) {
     // If validation fails, return error messages
@@ -46,107 +40,108 @@ exports.validateGetCarById = (req, res, next) => {
 };
 
 exports.validateCreateCar = (req, res, next) => {
-  // Validation body schema
-//   const validateBody = z.object({
-//     name: z.string(),
-//     nick_name: z.string().optional().nullable(),
-//     class: z.string().optional().nullable(),
-//     "address.city": z.string().optional().nullable(),
-//     "address.province": z.string().optional().nullable(),
-//     "education.bachelor": z.string().optional().nullable(),
-//   });
+  // Validate the query
+  const validateBody = z.object({
+    plate: z.string(),
+    manufacture_id: z.string(),
+    model: z.string(),
+    rentPerDay: z.coerce.number(),
+    capacity: z.coerce.number(),
+    description: z.string(),
+    availableAt: z.string(),
+    transmission: z.string(),
+    available: z.coerce.boolean(),
+    type_id: z.string(),
+    year: z.coerce.number(),
+    options: z.string().optional().nullable(),
+    specs: z.string().optional().nullable()
+  });
 
-//   const validateFileBody = z
-//     .object({
-//       profile_picture: z
-//         .object({
-//           name: z.string(),
-//           data: z.any(),
-//         })
-//         .nullable()
-//         .optional(),
-//     })
-//     .nullable()
-//     .optional();
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    // If validation fails, return error messages
+    throw new BadRequestError(resultValidateBody.error.errors);
+  }
 
-//   // Validate
-//   const result = validateBody.safeParse(req.body);
-//   if (!result.success) {
-//     // If validation fails, return error messages
-//     throw new BadRequestError(result.error.errors);
-//   }
+    const validateFileBody = z
+      .object({
+        image: z
+          .object({
+            name: z.string(),
+            data: z.any(),
+          }),
+      });
 
-//   const resultValidateFiles = validateFileBody.safeParse(req.files);
-//   if (!resultValidateFiles.success) {
-//     // If validation fails, return error messages
-//     throw new BadRequestError(result.error.errors);
-//   }
+    const resultValidateFiles = validateFileBody.safeParse(req.files);
+    if (!resultValidateFiles.success) {
+      // If validation fails, return error messages
+      throw new BadRequestError(result.error.errors);
+    }
 
-//   next();
+    next();
 };
 
 exports.validateUpdateCar = (req, res, next) => {
-  // zod validation
-//   const validateParams = z.object({
-//     id: z.string(),
-//   });
+  const validateParams = z.object({
+    id: z.string(),
+  });
 
-//   const validateFileBody = z
-//     .object({
-//       profile_picture: z
-//         .object({
-//           name: z.string(),
-//           data: z.any(),
-//         })
-//         .nullable()
-//         .optional(),
-//     })
-//     .nullable()
-//     .optional();
+  const resultValidateParams = validateParams.safeParse(req.params);
+  if (!resultValidateParams.success) {
+    // If validation fails, return error messages
+    throw new BadRequestError(result.error.errors);
+  }
 
-//   const resultValidateParams = validateParams.safeParse(req.params);
-//   if (!resultValidateParams.success) {
-//     // If validation fails, return error messages
-//     throw new BadRequestError(result.error.errors);
-//   }
+  const validateBody = z.object({
+    plate: z.string(),
+    manufacture_id: z.string(),
+    model: z.string(),
+    rentPerDay: z.coerce.number(),
+    capacity: z.coerce.number(),
+    description: z.string(),
+    availableAt: z.string(),
+    transmission: z.string(),
+    available: z.coerce.boolean(),
+    type_id: z.string(),
+    year: z.coerce.number(),
+    options: z.string().optional().nullable(),
+    specs: z.string().optional().nullable(),
+  });
 
-//   const resultValidateFiles = validateFileBody.safeParse(req.files);
-//   if (!resultValidateFiles.success) {
-//     // If validation fails, return error messages
-//     throw new BadRequestError(result.error.errors);
-//   }
+    // Validate
+    const resultValidateBody = validateBody.safeParse(req.body);
+    if (!resultValidateBody.success) {
+      // If validation fails, return error messages
+      throw new BadRequestError(result.error.errors);
+    }
 
-//   // Validation body schema
-//   const validateBody = z.object({
-//     name: z.string(),
-//     nick_name: z.string().optional().nullable(),
-//     class: z.string().optional().nullable(),
-//     "address.city": z.string().optional().nullable(),
-//     "address.province": z.string().optional().nullable(),
-//     "education.bachelor": z.string().optional().nullable(),
-//   });
+  const validateFileBody = z.object({
+    image: z.object({
+      name: z.string(),
+      data: z.any(),
+    }),
+  });
 
-//   // Validate
-//   const resultValidateBody = validateBody.safeParse(req.body);
-//   if (!resultValidateBody.success) {
-//     // If validation fails, return error messages
-//     throw new BadRequestError(result.error.errors);
-//   }
+  const resultValidateFiles = validateFileBody.safeParse(req.files);
+  if (!resultValidateFiles.success) {
+    // If validation fails, return error messages
+    throw new BadRequestError(result.error.errors);
+  }
 
-//   next();
+    next();
 };
 
 exports.validateDeleteCarById = (req, res, next) => {
   // Make a validation schema
-//   const validateParams = z.object({
-//     id: z.string(),
-//   });
+  const validateParams = z.object({
+    id: z.string(),
+  });
 
-//   const result = validateParams.safeParse(req.params);
-//   if (!result.success) {
-//     // If validation fails, return error messages
-//     throw new BadRequestError(result.error.errors);
-//   }
+  const result = validateParams.safeParse(req.params);
+  if (!result.success) {
+    // If validation fails, return error messages
+    throw new BadRequestError(result.error.errors);
+  }
 
-//   next();
+  next();
 };

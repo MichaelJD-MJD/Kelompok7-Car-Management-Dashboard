@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { PrismaClient } = require("@prisma/client");
 const JSONBigInt = require("json-bigint");
+const { NotFoundError } = require("../utils/request");
 
 const prisma = new PrismaClient();
 
@@ -64,51 +65,91 @@ exports.getCarById = async (id) => {
 };
 
 exports.createCar = async (data) => {
-//   const students = await prisma.students.findMany();
+  // Cek apakah manufacture_id ada di tabel manufactures
+  const manufactureExists = await prisma.manufactures.findUnique({
+    where: {
+      id: data.manufacture_id,
+    },
+  });
 
-//   // Find the max index to defnine the new data id
-//   let maxId = students.reduce(
-//     (max, student) => student.id > max && student.id,
-//     0
-//   );
-//   maxId = Number(maxId);
+  if (!manufactureExists) {
+    throw new NotFoundError("Manufacture ID is Not Found");
+  }
 
-//   const newStudent = {
-//     id: JSONBigInt.parse(maxId + 1),
-//     ...data,
-//   };
+  // Cek apakah type_id ada di tabel types
+  const typeExists = await prisma.types.findUnique({
+    where: {
+      id: data.type_id,
+    },
+  });
 
-//   const createStudent = await prisma.students.create({
-//     data: newStudent,
-//   });
+  if (!typeExists) {
+    throw new NotFoundError("Type ID is Not Found");
+  }
 
-//   return newStudent;
+  const cars = await prisma.cars.findMany();
+  // Find the max index to defnine the new data id
+  let maxId = cars.reduce((max, car) => car.id > max && car.id, 0);
+  maxId = Number(maxId);
+
+  const newCar = {
+    id: JSONBigInt.parse(maxId + 1),
+    ...data,
+  };
+
+  const createCar = await prisma.cars.create({
+    data: newCar,
+  });
+
+  return newCar;
 };
 
 exports.updateCar = async (id, data) => {
-//   const updateStudent = await prisma.students.update({
-//     where: {
-//       // filter
-//       id: id,
-//     },
-//     data: {
-//       ...data,
-//     },
-//   });
+  // Cek apakah manufacture_id ada di tabel manufactures
+  const manufactureExists = await prisma.manufactures.findUnique({
+    where: {
+      id: data.manufacture_id,
+    },
+  });
 
-//   // Convert BigInt fields to string for safe serialization
-//   const serializedStudents = JSONBigInt.stringify(updateStudent);
-//   return JSONBigInt.parse(serializedStudents);
+  if (!manufactureExists) {
+    throw new NotFoundError("Manufacture ID is Not Found");
+  }
+
+  // Cek apakah type_id ada di tabel types
+  const typeExists = await prisma.types.findUnique({
+    where: {
+      id: data.type_id,
+    },
+  });
+
+  if (!typeExists) {
+    throw new NotFoundError("Type ID is Not Found");
+  }
+
+  const updateCar = await prisma.cars.update({
+    where: {
+      // filter
+      id: id,
+    },
+    data: {
+      ...data,
+    },
+  });
+
+  // Convert BigInt fields to string for safe serialization
+  const serializedCars = JSONBigInt.stringify(updateCar);
+  return JSONBigInt.parse(serializedCars);
 };
 
 exports.deleteCarById = async (id) => {
-//   const deletedStudent = await prisma.students.delete({
-//     where: {
-//       id: id,
-//     },
-//   });
+  const deletedCar = await prisma.cars.delete({
+    where: {
+      id: id,
+    },
+  });
 
-//   // Convert BigInt fields to string for safe serialization
-//   const serializedStudents = JSONBigInt.stringify(deletedStudent);
-//   return JSONBigInt.parse(serializedStudents);
+  // Convert BigInt fields to string for safe serialization
+  const serializedCars = JSONBigInt.stringify(deletedCar);
+  return JSONBigInt.parse(serializedCars);
 };

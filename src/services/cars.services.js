@@ -1,3 +1,4 @@
+const { boolean } = require("zod");
 const carRepository = require("../repositories/cars.repositories");
 const { imageUpload } = require("../utils/image-kit");
 const { NotFoundError, InternalServerError } = require("../utils/request");
@@ -41,47 +42,63 @@ exports.getCarById = async (id) => {
 };
 
 exports.createCar = async (data, file) => {
-//   // upload file to image kit
-//   if (file?.profile_picture) {
-//     data.profile_picture = await imageUpload(file.profile_picture);
-//   }
+  // upload file to image kit
+  if (file?.image) {
+    data.image = await imageUpload(file.image);
+  }
 
-//   return studentRepository.createStudent(data);
+  data.rentPerDay = Number(data.rentPerDay);
+  data.capacity = Number(data.capacity);
+  const availableString = data.available.toLowerCase();
+  data.available = availableString === "true";
+  data.year = Number(data.year);
+  data.options ?  JSON.parse(data.options) : null;
+  data.specs ? JSON.parse(data.specs) : null;
+
+  return carRepository.createCar(data);
 };
 
 exports.updateCar = async (id, data, file) => {
-//   // cek apakah ada file yng diupload
-//   if (file?.profile_picture) {
-//     data.profile_picture = await imageUpload(file.profile_picture);
-//   }
+  // cek apakah ada file yng diupload
+  if (file?.image) {
+    data.image = await imageUpload(file.image);
+  }
 
-//   // find student is exist or not (validate the data)
-//   const existingStudent = await studentRepository.getStudentById(id);
-//   if (!existingStudent) {
-//     throw new NotFoundError("Student is Not Found!");
-//   }
+  // find car is exist or not (validate the data)
+  const existingCar = await carRepository.getCarById(id);
+  if (!existingCar) {
+    throw new NotFoundError("Car is Not Found!");
+  }
 
-//   // if exist, we will delete the student data
-//   const updatedStudent = await studentRepository.updateStudent(id, data);
-//   if (!updatedStudent) {
-//     throw new InternalServerError(["Failed to update student!"]);
-//   }
+  data.rentPerDay = Number(data.rentPerDay);
+  data.capacity = Number(data.capacity);
+  const availableString = data.available.toLowerCase();
+  data.available = availableString === "true";
+  data.year = Number(data.year);
+  data.options ? JSON.parse(data.options) : null;
+  data.specs ? JSON.parse(data.specs) : null;
 
-//   return updatedStudent;
+  // if exist, we will delete the car data
+  const updatedCar = await carRepository.updateCar(id, data);
+  if (!updatedCar) {
+    throw new InternalServerError(["Failed to update Car!"]);
+  }
+
+  return updatedCar;
 };
 
 exports.deleteCarById = async (id) => {
-//   // find student is exist or not (validate the data)
-//   const existingStudent = await studentRepository.getStudentById(id);
-//   if (!existingStudent) {
-//     throw new NotFoundError("Student is Not Found!");
-//   }
+  // find car is exist or not (validate the data)
+  const existingCar = await carRepository.getCarById(id);
+  if (!existingCar) {
+    throw new NotFoundError("Car is Not Found!");
+  }
 
-//   // if exist, we will delete the student data
-//   const deletedStudent = await studentRepository.deleteStudentById(id);
-//   if (!deletedStudent) {
-//     throw new InternalServerError(["Failed to delete student!"]);
-//   }
+  // if exist, we will delete the Car data
+  const deletedCar = await carRepository.deleteCarById(id);
+  if (!deletedCar) {
+    throw new InternalServerError(["Failed to delete Car!"]);
+  }
 
-//   return deletedStudent;
+  return deletedCar;
 };
