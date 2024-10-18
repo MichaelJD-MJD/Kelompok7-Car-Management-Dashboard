@@ -33,8 +33,8 @@ exports.validateCreate = (req, res, next) => {
     req.body = {
         ...req.body,
         establishment: parseInt(req.body.establishment),
-    }
-    
+    };
+
     const schema = z.object({
         name: z.string(),
         description: z.string().optional(),
@@ -42,6 +42,14 @@ exports.validateCreate = (req, res, next) => {
         office: z.string().optional(),
         country: z.string(),
     });
+
+    const requiredFields = ["name", "establishment", "country"];
+    const missingFields = requiredFields.filter((field) => !req.body[field]);
+    if (missingFields.length > 0) {
+        throw new BadRequestError(
+            `Missing required fields: ${missingFields.join(", ")}`
+        );
+    }
 
     const fileSchema = z
         .object({
