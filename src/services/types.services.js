@@ -3,7 +3,11 @@ const { imageUpload } = require("../utils/image-kit");
 const { NotFoundError, InternalServerError } = require("../utils/request");
 
 exports.getTypes = async (type) => {
-  return typeRepository.getTypes(type);
+  const types = await typeRepository.getTypes(type);
+  if (types.length === 0) {
+    throw new NotFoundError("Car Types are Not Found!");
+  }
+  return types;
 };
 
 exports.getTypeById = async (id) => {
