@@ -48,8 +48,8 @@ exports.createCar = async (data, file) => {
   const availableString = data.available.toLowerCase();
   data.available = availableString === "true";
   data.year = Number(data.year);
-  data.options ? JSON.parse(data.options) : null;
-  data.specs ? JSON.parse(data.specs) : null;
+  data.options ? JSON.stringify(data.options) : null;
+  data.specs ? JSON.stringify(data.specs) : null;
 
   return carRepository.createCar(data);
 };
@@ -83,8 +83,8 @@ exports.updateCar = async (id, data, file) => {
   const availableString = data.available.toLowerCase();
   data.available = availableString === "true";
   data.year = Number(data.year);
-  data.options ? JSON.parse(data.options) : null;
-  data.specs ? JSON.parse(data.specs) : null;
+  data.options ? JSON.stringify(data.options) : null;
+  data.specs ? JSON.stringify(data.specs) : null;
 
   // if exist, we will delete the car data
   const updatedCar = await carRepository.updateCar(id, data);
