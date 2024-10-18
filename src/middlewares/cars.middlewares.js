@@ -5,24 +5,23 @@ exports.validateGetCars = (req, res, next) => {
   // Validate the query
    if (Object.keys(req.query).length > 0) {
      const validateQuery = z.object({
-       plate: z.string().optional(),
-       manufacture_id: z.string().optional(),
-       model: z.string().optional(),
-       rentPerDay: z.coerce.number().optional(),
-       capacity: z.coerce.number().optional(),
+       plate: z.string().nullable().optional(),
+       manufacture_id: z.string().nullable().optional(),
+       model: z.string().nullable().optional(),
+       rentPerDay: z.coerce.number().nullable().optional(),
+       capacity: z.coerce.number().nullable().optional(),
        description: z.string().nullable().optional(),
        availableAt: z.string().nullable().optional(),
-       trasmission: z.string().optional(),
-       available: z.coerce.boolean().optional(),
-       type_id: z.string().optional(),
-       year: z.coerce.number().optional(),
+       trasmission: z.string().nullable().optional(),
+       available: z.coerce.boolean().nullable().optional(),
+       type_id: z.string().nullable().optional(),
+       year: z.coerce.number().nullable().optional(),
      });
 
      const resultValidateQuery = validateQuery.safeParse(req.query);
      if (!resultValidateQuery.success) {
        throw new BadRequestError(resultValidateQuery.error.errors);
      }
-     next();
    }
   next();
 };

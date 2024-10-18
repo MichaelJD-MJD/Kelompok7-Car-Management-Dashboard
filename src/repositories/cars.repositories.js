@@ -5,8 +5,19 @@ const JSONBigInt = require("json-bigint");
 const prisma = new PrismaClient();
 
 exports.getCars = async (query) => {
-  let searchedCar = await prisma.cars.findMany();
-  if (Object.keys(query).length > 0) {
+  let searchedCar;
+
+  // Check if there are query parameters
+  if (Object.keys(query).length === 0) {
+    // If no query params, fetch all cars
+    searchedCar = await prisma.cars.findMany({
+      include: {
+        manufactures: true,
+        types: true,
+      },
+    });
+  } else {
+    // Process query params if they exist
     const {
       plate,
       manufacture_id,
@@ -18,6 +29,7 @@ exports.getCars = async (query) => {
       type_id,
       year,
     } = query;
+
     searchedCar = await prisma.cars.findMany({
       where: {
         OR: [
@@ -32,20 +44,20 @@ exports.getCars = async (query) => {
               ? { contains: transmission, mode: "insensitive" }
               : undefined,
           },
-          { rentPerDay: rentPerDay ? { equals: rentPerDay } : undefined }, // Correct for integer
-          { capacity: capacity ? { equals: capacity } : undefined }, // Correct for integer
+          { rentPerDay: rentPerDay ? { equals: rentPerDay } : undefined },
+          { capacity: capacity ? { equals: capacity } : undefined },
           {
             available:
               available !== undefined ? { equals: available } : undefined,
-          }, // Correct for boolean
+          },
           {
             manufacture_id: manufacture_id
               ? { equals: manufacture_id }
               : undefined,
-          }, // Correct for integer
-          { type_id: type_id ? { equals: type_id } : undefined }, // Correct for integer
-          { year: year ? { equals: year } : undefined }, // Correct for integer
-        ].filter(Boolean), // Removes undefined fields
+          },
+          { type_id: type_id ? { equals: type_id } : undefined },
+          { year: year ? { equals: year } : undefined },
+        ].filter(Boolean),
       },
       include: {
         manufactures: true,
