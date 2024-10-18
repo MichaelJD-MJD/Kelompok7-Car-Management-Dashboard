@@ -1,6 +1,5 @@
 const { z } = require("zod");
 const { BadRequestError } = require("../utils/request");
-const { options } = require("../routes");
 
 exports.validateGetCars = (req, res, next) => {
   // Validate the query
