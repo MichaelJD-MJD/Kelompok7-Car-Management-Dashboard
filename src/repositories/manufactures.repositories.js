@@ -4,37 +4,15 @@ const JSONBigInt = require("json-bigint");
 const prisma = new PrismaClient();
 
 exports.getAll = async (name, establisment, country) => {
-    let query = {};
-    let orQuery = [];
-    if ((name, establisment, country)) {
-        orQuery.push({
-            name: {
-                contains: name,
-                // mode: "insensitive",
-            },
-        });
-        orQuery.push({
-            establishment: {
-                contains: establisment,
-                // mode: "insensitive",
-            },
-        });
-        orQuery.push({
-            country: {
-                contains: country,
-                // mode: "insensitive",
-            },
-        });
-    }
-    if (orQuery.length > 0) {
-        query.where = {
-            ...query.where,
-            OR: orQuery,
-        };
-    }
+    const query = {
+        where: {
+            name: name ? { contains: name, mode: "insensitive" } : undefined,
+            establishment: establisment ? { contains: establisment, mode: "insensitive" } : undefined,
+            country: country ? { contains: country, mode: "insensitive" } : undefined,
+        },
+    };
 
     const searched = await prisma.manufactures.findMany(query);
-
     return (serialize = JSONBigInt.parse(JSONBigInt.stringify(searched)));
 };
 

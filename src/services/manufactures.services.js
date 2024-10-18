@@ -3,7 +3,11 @@ const { imageUpload } = require("../utils/image-kit");
 const { NotFoundError, InternalServerError } = require("../utils/request");
 
 exports.getAll = async (name, establisment, country) => {
-    return manufacturesRepository.getAll(name, establisment, country);
+    const searched = await manufacturesRepository.getAll(name, establisment, country);
+    if (searched.length === 0) {
+        throw new NotFoundError("Manufacture not found");
+    }
+    return searched;
 };
 
 exports.getById = async (id) => {
