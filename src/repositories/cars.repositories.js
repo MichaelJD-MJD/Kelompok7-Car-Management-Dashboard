@@ -72,7 +72,17 @@ exports.getCarById = async (id) => {
 };
 
 exports.createCar = async (data) => {
+  const maxId = await prisma.cars.findFirst({
+    orderBy: {
+      id: "desc",
+    },
+  });
+
+  const serializeMaxId = JSONBigInt.parse(JSONBigInt.stringify(maxId));
+  const newId = serializeMaxId ? serializeMaxId.id + 1 : 1;
+
   const newCar = {
+    id: newId,
     ...data,
   };
 
