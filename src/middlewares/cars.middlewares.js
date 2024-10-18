@@ -1,26 +1,30 @@
 const { z } = require("zod");
 const { BadRequestError } = require("../utils/request");
+const { options } = require("../routes");
 
 exports.validateGetCars = (req, res, next) => {
   // Validate the query
-  const validateQuery = z.object({
-    plate: z.string().optional(),
-    manufacture_id: z.string().optional(),
-    model: z.string().optional(),
-    rentPerDay: z.number().optional(),
-    capacity: z.string().optional(),
-    trasmission: z.string().optional(),
-    available: z.boolean().optional(),
-    type_id: z.string().optional(),
-    year: z.number().optional(),
-  });
+   if (Object.keys(req.query).length > 0) {
+     const validateQuery = z.object({
+       plate: z.string().optional(),
+       manufacture_id: z.string().optional(),
+       model: z.string().optional(),
+       rentPerDay: z.coerce.number().optional(),
+       capacity: z.coerce.number().optional(),
+       description: z.string().nullable().optional(),
+       availableAt: z.string().nullable().optional(),
+       trasmission: z.string().optional(),
+       available: z.coerce.boolean().optional(),
+       type_id: z.string().optional(),
+       year: z.coerce.number().optional(),
+     });
 
-  const resultValidateQuery = validateQuery.safeParse(req.query);
-  if (!resultValidateQuery.success) {
-    // If validation fails, return error messages
-    throw new BadRequestError(resultValidateQuery.error.errors);
-  }
-
+     const resultValidateQuery = validateQuery.safeParse(req.query);
+     if (!resultValidateQuery.success) {
+       throw new BadRequestError(resultValidateQuery.error.errors);
+     }
+     next();
+   }
   next();
 };
 
@@ -53,8 +57,8 @@ exports.validateCreateCar = (req, res, next) => {
     available: z.coerce.boolean(),
     type_id: z.string(),
     year: z.coerce.number(),
-    options: z.string().optional().nullable(),
-    specs: z.string().optional().nullable()
+    options: z.array(z.string()).nullable().optional(),
+    specs: z.array(z.string()).nullable().optional(),
   });
 
   const resultValidateBody = validateBody.safeParse(req.body);
@@ -75,7 +79,7 @@ exports.validateCreateCar = (req, res, next) => {
     const resultValidateFiles = validateFileBody.safeParse(req.files);
     if (!resultValidateFiles.success) {
       // If validation fails, return error messages
-      throw new BadRequestError(result.error.errors);
+      throw new BadRequestError(resultValidateFiles.error.errors);
     }
 
     next();
@@ -104,8 +108,8 @@ exports.validateUpdateCar = (req, res, next) => {
     available: z.coerce.boolean(),
     type_id: z.string(),
     year: z.coerce.number(),
-    options: z.string().optional().nullable(),
-    specs: z.string().optional().nullable(),
+    options: z.array(z.string()).nullable().optional(),
+    specs: z.array(z.string()).nullable().optional(),
   });
 
     // Validate
@@ -125,7 +129,7 @@ exports.validateUpdateCar = (req, res, next) => {
   const resultValidateFiles = validateFileBody.safeParse(req.files);
   if (!resultValidateFiles.success) {
     // If validation fails, return error messages
-    throw new BadRequestError(result.error.errors);
+    throw new BadRequestError(resultValidateFiles.error.errors);
   }
 
     next();

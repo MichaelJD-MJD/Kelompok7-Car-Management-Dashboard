@@ -3,18 +3,7 @@ const { successResponse } = require("../utils/response");
 
 exports.getCars = async (req, res, next) => {
   // Call the usecase or service
-  const data = await carService.getCars(
-    req.query?.plate,
-    req.query?.manufacture_id,
-    req.query?.model,
-    req.query?.rentPerDay,
-    req.query?.capacity,
-    req.query?.transmission,
-    req.query?.available,
-    req.query?.type_id,
-    req.query?.year,
-  );
-
+  const data = await carService.getCars(req.query);
   successResponse(res, data);
 };
 
