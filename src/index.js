@@ -11,9 +11,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use(
-  fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 },
-  })
+    fileUpload({
+        limits: { fileSize: 50 * 1024 * 1024 },
+    })
 );
 
 app.use("/", router);
@@ -22,5 +22,5 @@ app.use("*", notFoundURLHandler);
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });

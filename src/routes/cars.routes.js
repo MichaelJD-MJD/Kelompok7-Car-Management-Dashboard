@@ -1,17 +1,17 @@
 const express = require("express");
 const {
-  validateGetCars,
-  validateGetCarById,
-  validateDeleteCarById,
-  validateCreateCar,
-  validateUpdateCar,
+    validateGetCars,
+    validateGetCarById,
+    validateDeleteCarById,
+    validateCreateCar,
+    validateUpdateCar,
 } = require("../middlewares/cars.middlewares");
 const {
-  getCars,
-  getCarById,
-  deleteCarById,
-  createCar,
-  updateCar,
+    getCars,
+    getCarById,
+    deleteCarById,
+    createCar,
+    updateCar,
 } = require("../controllers/cars.controllers");
 
 const router = express.Router();

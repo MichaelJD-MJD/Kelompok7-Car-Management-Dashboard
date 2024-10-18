@@ -7,8 +7,12 @@ exports.getAll = async (name, establisment, country) => {
     const query = {
         where: {
             name: name ? { contains: name, mode: "insensitive" } : undefined,
-            establishment: establisment ? { contains: establisment, mode: "insensitive" } : undefined,
-            country: country ? { contains: country, mode: "insensitive" } : undefined,
+            establishment: establisment
+                ? { contains: establisment, mode: "insensitive" }
+                : undefined,
+            country: country
+                ? { contains: country, mode: "insensitive" }
+                : undefined,
         },
     };
 
