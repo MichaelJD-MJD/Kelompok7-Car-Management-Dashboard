@@ -4,11 +4,12 @@ const prisma = new PrismaClient();
 
 exports.getTypes = async (type) => {
   const searchedTypes = await prisma.types.findMany({
-    where: {
-      OR: [{ type: { contains: type, mode: "insensitive" } }],
-    },
+    where: type
+      ? { OR: [{ type: { contains: type, mode: "insensitive" } }] } // Jika ada type, lakukan pencarian
+      : {}, // Jika tidak ada type, ambil semua data tanpa filter
   });
 
+  // Serialisasi data untuk menangani BigInt
   const serializedTypes = JSONBigInt.stringify(searchedTypes);
   return JSONBigInt.parse(serializedTypes);
 };

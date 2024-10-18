@@ -3,8 +3,18 @@ const typeService = require("../services/types.services");
 
 exports.getTypes = async (req, res, next) => {
   // Call the usecase or service
-  const data = await typeService.getTypes(req.query?.type);
-  successResponse(res, data);
+  try {
+    // Jika query parameter type tidak ada, biarkan undefined atau null
+    const type = req.query?.type || null;
+
+    // Panggil service
+    const data = await typeService.getTypes(type);
+
+    // Respon sukses
+    successResponse(res, data);
+  } catch (error) {
+    next(error); // Tangani error jika ada
+  }
 };
 
 exports.getTypeById = async (req, res, next) => {
@@ -21,14 +31,12 @@ exports.createType = async (req, res, next) => {
 };
 
 exports.updateType = async (req, res, next) => {
-  // Get the id from params
   const { id } = req.params;
   const data = await typeService.updateType(id, req.body, req.files);
   successResponse(res, data);
 };
 
 exports.deleteTypeById = async (req, res, next) => {
-  // Get the id from params
   const { id } = req.params;
   const data = await typeService.deleteTypeById(id);
   successResponse(res, data);

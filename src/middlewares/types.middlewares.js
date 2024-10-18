@@ -30,7 +30,6 @@ exports.validateGetTypeById = (req, res, next) => {
 exports.validateCreateType = (req, res, next) => {
   const validateBody = z.object({
     type: z.string(),
-    description: z.string(),
   });
 
   const result = validateBody.safeParse(req.body);
@@ -53,7 +52,6 @@ exports.validateUpdateType = (req, res, next) => {
 
   const validateBody = z.object({
     type: z.string(),
-    description: z.string(),
   });
 
   const resultValidateBody = validateBody.safeParse(req.body);
