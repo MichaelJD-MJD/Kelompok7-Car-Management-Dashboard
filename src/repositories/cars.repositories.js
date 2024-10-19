@@ -106,7 +106,8 @@ exports.createCar = async (data) => {
         data: newCar,
     });
 
-    return createCar;
+    const serializedCars = JSONBigInt.stringify(createCar);
+    return JSONBigInt.parse(serializedCars);
 };
 
 exports.updateCar = async (id, data) => {
